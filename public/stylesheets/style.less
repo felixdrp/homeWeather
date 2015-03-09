@@ -1,0 +1,112 @@
+// Wrapper for media type
+.mobile-portrait(@rules) {
+  @media (min-width: 700px) and (orientation: portrait) {
+    @rules();
+  }
+}
+
+body {
+  padding-left: 10px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.measure-box-header {
+  font-size: large;
+
+  @media (min-width: 700px) and (orientation: portrait) {
+    font-size: 100px;
+  }
+
+  margin-bottom: 5px;
+
+  .measure {
+    margin-left: 5px;
+    font-size: x-large;
+  }
+
+}
+
+.sensor-title-image {
+  margin: 3px 8px;
+  float: left;
+  height: 10vh;
+  min-height: 30px;
+
+  .mobile-portrait({
+    height: 100px;
+  })
+
+}
+
+/* Small Devices, Tablets */
+/* #### Mobile Phones Portrait #### */
+/*
+@media (min-width: 700px) and (orientation: portrait) {
+  .measure-box-header {
+    color: blue;
+    font-size: 50px;
+    margin-bottom: 5px;
+
+    .measure {
+      font-size: 100px;  
+    }
+  }
+}
+*/
+// Confort Zone styles
+.coordinate-axis {
+  fill:none;
+  stroke: black; stroke-width:1;
+}
+.coordinate-axis-middle {
+  fill:none;
+  stroke: black;
+  stroke-width:1;
+  fill:none;
+  stroke:#000000;
+  stroke-width:1px;
+  stroke-linecap:butt;
+  stroke-linejoin:miter;
+  stroke-opacity:1;
+  marker-start:url(#EmptyTriangleInL);
+  stroke-miterlimit:4;
+  stroke-dasharray:1.1,4.4;
+  stroke-dashoffset:0;
+}
+
+.saturated-vapor-density-text {
+  fill: red;
+  font-family: Verdana;
+  font-size: 18;
+}
+.saturated-vapor-density {
+  fill:none;
+  stroke:red;
+  stroke-width:1;
+}
+
+.humidity-line { 
+  fill:none;
+  stroke:blue;
+  stroke-width:1;
+}
+
+.humidity-percentage-text {
+  fill: blue;
+  font-size: 13;
+  font-family: arial;
+}
+.temperature-measure-text {
+  fill: black;
+  font-family: Verdana; 
+  font-size: 15;
+}
+.confort-zone-area {
+  fill:lime;
+  stroke: black;
+  stroke-width:1;
+}

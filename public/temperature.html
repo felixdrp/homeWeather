@@ -1,0 +1,26 @@
+<img src="images/humidity.svg"
+     style="margin:3px 8px;float:left;height:10%;min-height:30px"></img>
+<div name="temp" class="measure" ng-init="temp = 38">
+  <span>Temperature</span> <span>{{temp}}°C</span> / <span>{{temp * 1.8 + 32}}°F</span>
+</div>
+<div name="estadistic-temp" style="display: inline-block;">
+  <div>
+    (data temporal)
+  </div>
+  <div ng-click="addE()">
+    <table>
+      <tr style="text-align: left;">
+	<th>Max.</th>
+	<th>/ Min.</th>
+	<th>/ Mean</th>
+	<th>/ St. Deviation</th>
+      </tr>
+      <tr>
+	<td>{{thermal.max()}}°C </td>
+	<td>/ {{thermal.min}}°C </td>
+	<td>/ {{thermal.mean}}°C </td>
+	<td>/ {{thermal.stDeviation}}°C</td>
+      </tr>
+    </table>
+  </div>
+</div>

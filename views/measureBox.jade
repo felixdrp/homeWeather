@@ -1,0 +1,20 @@
+img.sensor-title-image(ng-src="{{imageUrl}}")
+div.measure-box-header(name="measure-box")
+  span {{type}}
+  span.measure
+    span {{lastMeasure.toFixed(2)}} {{units}}
+    span(ng-show="type == 'Temperature'")  / {{(lastMeasure * 1.8 + 32).toFixed(2)}}°F
+div(name="estadistic-data", style="display: inline-block;")
+  div(ng-click="addE()")
+    table
+      tr(style="text-align: left;")
+        th Max.
+        th / Min.
+        th / Mean
+        th / St. Deviation
+      tr
+        td   {{data.max()}} {{units}}
+        td  / {{data.min()}} {{units}}
+        td  / {{data.mean()}} {{units}}
+        td  / {{data.stDeviation()}} {{units}}
+div(style="clear:both;")
