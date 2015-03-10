@@ -9,7 +9,7 @@ gulp.task('js', function () {
 	.pipe(gulp.dest('.'))
 
     gulp.src(['app.js'])
-	.pipe(gulp.dest('/home/sephir/Documents/felix/kindergarten/nodejs/fileUpload/public/lib'))
+	.pipe(gulp.dest('public/lib'))
 }) 
 
 gulp.task('watch', ['js'], function () {
