@@ -11,6 +11,9 @@
     "gulp-nodemon": "latest",
     "gulp-watch": "~0.6.4",
     "gulp-jshint": "latest",
+    "gulp-concat": "latest",
+    "gulp-rename": "latest",
+    "gulp-uglify": "latest"
     "gulp-livereload": "^1.5.0"
   },
   "dependencies": {
