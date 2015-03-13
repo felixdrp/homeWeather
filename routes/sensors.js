@@ -3,8 +3,8 @@ var express = require('express');
 var router = express.Router();
 var pg = require('pg');
 
-//var conString = "postgres://admin:1234@localhost:5433/homeweather";
-var conString = "postgres://admin:1234@192.168.1.81:5432/homeweather";
+// Load dataBase Url
+var configApp = require('../config-app');
 
 /*To translate variable to DB name*/
 function translateToDBVariable(variable) {
@@ -20,7 +20,7 @@ function translateToDBVariable(variable) {
 
 /* GET list of sensors. */
 router.get('/', function(req, res) {
-  var client = new pg.Client(conString);
+  var client = new pg.Client(configApp.dbUrl);
   client.connect(function(err) {
     if(err) {
       return console.error('could not connect to postgres', err);
@@ -29,10 +29,10 @@ router.get('/', function(req, res) {
       if(err) {
         return console.error('error running query', err);
       }
-      console.log(result.rows[0]);
+//      console.log(result.rows[0]);
  
       if (result.rows[0] == undefined) {
-	  res.status(500).json({ error: 'sensors list not found!!' })
+	  res.status(500).json({ error: 'sensors list not found!!' });
       } else {
 	  res.json(result.rows[0]);
       }
@@ -43,7 +43,7 @@ router.get('/', function(req, res) {
 
 /* GET the measure of the last hour from the id sensor. */
 router.get('/:id([0-9]+)/:type', function(req, res) {
-  var client = new pg.Client(conString);
+  var client = new pg.Client(configApp.dbUrl);
   var type;
 
   type = translateToDBVariable(req.params.type);
@@ -56,10 +56,10 @@ router.get('/:id([0-9]+)/:type', function(req, res) {
       if(err) {
         return console.error('error running query', err);
       }
-      console.log(result.rows[0]);
+//      console.log(result.rows[0]);
       // If it returns an empty response
       if (result.rows[0] == undefined) {
-	  res.status(500).json({ error: 'sensor not found!!' })
+	  res.status(500).json({ error: 'sensor not found!!' });
       } else {
 	  res.json(result.rows[0]);
       }
@@ -70,7 +70,7 @@ router.get('/:id([0-9]+)/:type', function(req, res) {
 
 /* GET id sensor day lecture. */
 router.get('/:id([0-9]+)/:type/:period', function(req, res) {
-  var client = new pg.Client(conString);
+  var client = new pg.Client(configApp.dbUrl);
   var type;
 
   type = translateToDBVariable(req.params.type);
@@ -84,10 +84,10 @@ router.get('/:id([0-9]+)/:type/:period', function(req, res) {
       if(err) {
         return console.error('error running query', err);
       }
-      console.log(result.rows[0]);
+//      console.log(result.rows[0]);
  
       if (result.rows[0] == undefined) {
-	  res.status(500).json({ error: 'sensor not found!!' })
+	  res.status(500).json({ error: 'sensor not found!!' });
       } else {
 	  res.json(result.rows[0]);
       }

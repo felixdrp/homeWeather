@@ -1,10 +1,20 @@
-'use strict'
+'use strict';
 
 angular.module('myApp')
     .factory('sensorDriver', [
 	function() {
-	    var focus = 0;
-	    
+	    // Open a WebSocket:
+	    //   http://dev.w3.org/html5/websockets/
+	    //   https://developer.mozilla.org/en/docs/WebSockets
+	    var ws = new WebSocket('ws://' + window.location.hostname + ':' + window.location.port);
+	    // On WebSocket error
+	    ws.onerror = function(event) {console.error('Socket error event ');console.error(event);};
+	    // On WebSocket message
+	    ws.onmessage = function(event) {
+		
+		console.log(event.data);
+	    };
+
 	    return {
 		getFocus: function() {
 		    return focus;

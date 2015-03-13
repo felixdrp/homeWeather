@@ -1,6 +1,10 @@
-
+'use strict';
 angular.module('myApp')
-    .directive('sensorDataBox', ['$resource', '$interval', function($resource, $interval) {
+    .directive('sensorDataBox', [
+	'$resource', 
+	'$interval', 
+	'sensorDriver',
+	function($resource, $interval, sensorDriver) {
 	function link(scope, element, attrs) {
 	    scope.type = attrs.type;
 	    // UpperCase first letter
