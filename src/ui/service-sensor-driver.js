@@ -11,8 +11,8 @@ angular.module('myApp')
 	    ws.onerror = function(event) {console.error('Socket error event ');console.error(event);};
 	    // On WebSocket message
 	    ws.onmessage = function(event) {
-		
-		console.log(event.data);
+
+			console.log('datagram>' + JSON.parse(event.data));
 	    };
 
 	    return {
