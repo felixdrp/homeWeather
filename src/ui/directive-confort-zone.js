@@ -134,15 +134,31 @@ angular.module('myApp')
 	  lineColor = 255 - (j * 4);
 	  temperatureHistoryLine.push(makeSVG('line', 
 		    			      {
-		    				"x1":0,
-		    				"y1":0, 
-		    				"x2":0,
-		    				"y2":0, 
+		    				"x1": 0,
+		    				"y1": 0, 
+		    				"x2": 0,
+		    				"y2": 0, 
 		    				"style":"stroke:rgb(" + lineColor + "," + lineColor + "," + lineColor + ")"
 		    			      }));
 	  temperatureHistoryLine[j].classList.add('temperature-history');
 	  angular.element(document.getElementById('graphic')).append(temperatureHistoryLine[j]);
 	}
+
+	// Last measure circle
+	var lastMeasureCircle;
+	lastMeasureCircle = makeSVG('circle', 
+		    	{
+		    	  "cx": xZero,
+		    	  "cy": yZero, 
+		    	  "r": 1
+		    	});
+	lastMeasureCircle.classList.add('temperature-last-measure');
+	angular.element(document.getElementById('graphic')).append(lastMeasureCircle);
+
+
+/*
+  Ask for information to the server
+*/
 
 	// Get de SensorList and it is used to create the sensors buttons (VIEW).
 	sensorDriver.getSensorList().then(function(data) {
@@ -182,6 +198,11 @@ angular.module('myApp')
 		    temperatureHistoryLine[k].setAttribute("x2", xZero + scope.data.temperature[k + 1] * temperaturePixelsByDegree);
 		    temperatureHistoryLine[k].setAttribute("y2", yZero - saturatedVaporDensity(scope.data.temperature[k + 1]) * (scope.data.humidity[k + 1] / 100) * humidityPixelsByFactor);
 		  }
+		  lastMeasureCircle.setAttribute("cx", xZero + scope.data.temperature[scope.data.temperature.length - 1] * temperaturePixelsByDegree);
+		  lastMeasureCircle.setAttribute("cy", 
+						 yZero - 
+						 saturatedVaporDensity(scope.data.temperature[scope.data.temperature.length - 1]) * 
+						 (scope.data.humidity[scope.data.humidity.length - 1] / 100) * humidityPixelsByFactor);
 		}
 
 		scope.$digest();
