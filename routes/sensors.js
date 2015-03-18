@@ -2,6 +2,7 @@
 var express = require('express');
 var router = express.Router();
 var pg = require('pg');
+var DBQuery = require('../dataBaseQueries');
 
 // Load dataBase Url
 var configApp = require('../config-app');
@@ -26,74 +27,48 @@ router.get('/', function(req, res) {
       return console.error('could not connect to postgres', err);
     }
     client.query("select * from sensors_list", function(err, result) {
-      if(err) {
-        return console.error('error running query', err);
-      }
-//      console.log(result.rows[0]);
+	if(err) {
+            return console.error('error running query', err);
+	}
+	//      console.log(result.rows[0]);
  
-      if (result.rows[0] == undefined) {
-	  res.status(500).json({ error: 'sensors list not found!!' });
-      } else {
-	  res.json(result.rows[0]);
-      }
-      client.end();
+	if (result.rows[0] == undefined) {
+	    res.status(500).json({ error: 'sensors list not found!!' });
+	} else {
+	    res.json(result.rows[0]);
+	}
+	client.end();
     });
   });
 });
 
 /* GET the measure of the last hour from the id sensor. */
 router.get('/:id([0-9]+)/:type', function(req, res) {
-  var client = new pg.Client(configApp.dbUrl);
-  var type;
-
-  type = translateToDBVariable(req.params.type);
-
-  client.connect(function(err) {
-    if(err) {
-      return console.error('could not connect to postgres', err);
-    }
-    client.query("select id, name, (select to_json( array_agg(data -> '" + type + "') ) from sensors_data where timestamp > current_timestamp - interval '1 hour' and timestamp <= current_timestamp and id = " + req.params.id + ") as temperature from sensors_list where id = " + req.params.id, function(err, result) {
-      if(err) {
-        return console.error('error running query', err);
-      }
-//      console.log(result.rows[0]);
-      // If it returns an empty response
-      if (result.rows[0] == undefined) {
-	  res.status(500).json({ error: 'sensor not found!!' });
-      } else {
-	  res.json(result.rows[0]);
-      }
-      client.end();
-    });
-  });
+    DBQuery.lastHour(req.params.id, req.params.type)
+	.then(
+	    function (data) {
+		res.json(JSON.parse(data));
+	    },
+	    function (error) {
+		res.status(500).json({ error: error });
+	    }
+	);
 });
+
 
 /* GET id sensor day lecture. */
+/*
 router.get('/:id([0-9]+)/:type/:period', function(req, res) {
-  var client = new pg.Client(configApp.dbUrl);
-  var type;
-
-  type = translateToDBVariable(req.params.type);
-
-  client.connect(function(err) {
-    if(err) {
-      return console.error('could not connect to postgres', err);
-    }
-
-    client.query("select id, name, (select to_json( array_agg(data -> '" + type + "') ) from sensors_data where timestamp >= (timestamp '2014-12-16 11:52:01') and timestamp < (timestamp '2014-12-16 11:52:01' + interval '1000 second') and id = " + req.params.id + ") as temperature from sensors_list where id = " + req.params.id, function(err, result) {
-      if(err) {
-        return console.error('error running query', err);
-      }
-//      console.log(result.rows[0]);
- 
-      if (result.rows[0] == undefined) {
-	  res.status(500).json({ error: 'sensor not found!!' });
-      } else {
-	  res.json(result.rows[0]);
-      }
-      client.end();
-    });
-  });
+    DBQuery.lastDay(req.params.id, req.params.type)
+	.then(
+	    function (data) {
+		res.json(JSON.parse(data));
+	    },
+	    function (error) {
+		res.status(500).json({ error: error });
+	    }
+	);
 });
+*/
 
 module.exports = router;

@@ -8,9 +8,7 @@ var app = require('../app');
 var debug = require('debug')('app4:server');
 var http = require('http');
 
-// Load the dataBase url
-var configApp = require('../config-app');
-
+var DBQuery = require('../dataBaseQueries');
 // Websocket
 var WebSocketServer = require('ws').Server;
 
@@ -37,14 +35,33 @@ server.on('listening', onListening);
 
 var wss = new WebSocketServer({server: server});
 wss.on('connection', function(ws) {
-    var id = setInterval(function() {
-       ws.send(JSON.stringify({"hola":10}), function() { /* ignore errors */ });
-    }, 1000);
-    console.log('started client interval');
+    var queryList;
+
+    console.log('started websocket client');
+
     ws.on('close', function() {
-	     console.log('stopping client interval');
-	     clearInterval(id);
+	     console.log('stopping websocket client');
+	     //clearInterval(id);
     });
+
+    ws.onmessage = function(event) {
+	// Check the query.
+	var query = /sensor\/(\d+)\/(humidity|temperature)\//g.exec(event.data);
+	if (query != null && query.length == 3) {
+	    console.log(event.data);
+
+	    DBQuery.lastHour(query[1], query[2])
+		.then(function (data) { ws.send(data); },
+		      function (error) { console.error(error); });
+
+	    // Give the last measure automaticaly
+	    setInterval(function(){ 
+		DBQuery.lastHour(query[1], query[2])
+		    .then(function (data) { ws.send(data); },
+			  function (error) { console.error(error); });
+	    }, 30000);
+	}
+    };
 });
 
 
