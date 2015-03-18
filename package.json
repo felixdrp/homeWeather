@@ -26,6 +26,7 @@
     "serve-favicon": "~2.2.0",
     "less-middleware": "2.0.1",
     "pg": "latest",
-    "ws": "latest"
+    "ws": "latest",
+    "q": "latest"
   }
 }

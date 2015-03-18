@@ -14,8 +14,8 @@ function translateToDBVariable(variable) {
 	return 't';
 	break;
       case 'humidity':
-  	return 'h';
-	break;
+        return 'h';
+        break;
     }
 }
 
@@ -32,12 +32,12 @@ router.get('/', function(req, res) {
 	}
 	//      console.log(result.rows[0]);
  
+	client.end();
 	if (result.rows[0] == undefined) {
 	    res.status(500).json({ error: 'sensors list not found!!' });
 	} else {
 	    res.json(result.rows[0]);
 	}
-	client.end();
     });
   });
 });
