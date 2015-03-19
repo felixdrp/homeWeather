@@ -1,4 +1,7 @@
 // Wrapper for media type
+/* Small Devices, Tablets */
+/* #### Mobile Phones Portrait #### */
+/*
 .mobile-portrait(@rules) {
   @media (min-width: 700px) and (orientation: portrait) {
     @rules();
@@ -12,6 +15,25 @@ body {
 
 a {
   color: #00B7FF;
+}
+
+h1.title {
+  margin-left: 20px;
+}
+
+.sensor-list {
+  position: absolute;
+  width: 30%;
+  padding-left: 5px;
+  .sensor {
+    .title {
+      margin: 3px;
+      padding: 2px 5px;
+      border: solid 3px;
+      border-color: DarkSlateGray Silver Silver DarkSlateGray;
+      border-radius: 5px;
+    }
+  }
 }
 
 .measure-box-header {
@@ -42,79 +64,76 @@ a {
 
 }
 
-/* Small Devices, Tablets */
-/* #### Mobile Phones Portrait #### */
-/*
-@media (min-width: 700px) and (orientation: portrait) {
-  .measure-box-header {
-    color: blue;
-    font-size: 50px;
-    margin-bottom: 5px;
-
-    .measure {
-      font-size: 100px;  
-    }
-  }
-}
-*/
 // Confort Zone styles
-.coordinate-axis {
-  fill:none;
-  stroke: black; stroke-width:1;
-}
-.coordinate-axis-middle {
-  fill:none;
-  stroke:#888;
-  stroke-width:1px;
-  stroke-linecap:butt;
-  stroke-linejoin:miter;
-  stroke-opacity:1;
-  marker-start:url(#EmptyTriangleInL);
-  stroke-miterlimit:4;
-  stroke-dasharray:1.1,4.4;
-  stroke-dashoffset:0;
-}
+.confort-zone {
+  position: absolute;
+  left: 36%;
+  width: 54vw;
 
-.saturated-vapor-density-text {
-  fill: red;
-  font-family: Verdana;
-  font-size: 18;
-}
-.saturated-vapor-density {
-  fill:none;
-  stroke:red;
-  stroke-width:1;
-}
+  .mobile-portrait({
+    position: relative;
+    left: 1%;
+    width: 540px;
+  })
 
-.humidity-line { 
-  fill:none;
-  stroke:blue;
-  stroke-width:1;
-}
+  .coordinate-axis {
+    fill:none;
+    stroke: black; stroke-width:1;
+  }
+  .coordinate-axis-middle {
+    fill:none;
+    stroke:#888;
+    stroke-width:1px;
+    stroke-linecap:butt;
+    stroke-linejoin:miter;
+    stroke-opacity:1;
+    marker-start:url(#EmptyTriangleInL);
+    stroke-miterlimit:4;
+    stroke-dasharray:1.1,4.4;
+    stroke-dashoffset:0;
+  }
 
-.humidity-percentage-text {
-  fill: blue;
-  font-size: 13;
-  font-family: arial;
-}
-.temperature-measure-text {
-  fill: black;
-  font-family: Verdana; 
-  font-size: 15;
-}
+  .saturated-vapor-density-text {
+    fill: red;
+    font-family: Verdana;
+    font-size: 18;
+  }
+  .saturated-vapor-density {
+    fill:none;
+    stroke:red;
+    stroke-width:1;
+  }
 
-.confort-zone-area {
-//  fill:lime;
-  fill:#91F7AF;
-  stroke: lime;
-  stroke-width: 1;
-}
+  .humidity-line { 
+    fill:none;
+    stroke:blue;
+    stroke-width:1;
+  }
 
-.temperature-history {
-  stroke-width: 0.5px;
-}
-.temperature-last-measure {
-  fill:red;
-  stroke:red;
-  stroke-width:1;
+  .humidity-percentage-text {
+    fill: blue;
+    font-size: 13;
+    font-family: arial;
+  }
+  .temperature-measure-text {
+    fill: black;
+    font-family: Verdana; 
+    font-size: 11px;
+  }
+
+  .confort-zone-area {
+    //  fill:lime;
+    fill:#91F7AF;
+    stroke: lime;
+    stroke-width: 1;
+  }
+
+  .temperature-history {
+    stroke-width: 0.5px;
+  }
+  .temperature-last-measure {
+    fill:red;
+    stroke:red;
+    stroke-width:1;
+  }
 }

@@ -102,8 +102,14 @@ angular.module('myApp')
 		    } else {
 			scope.sensorConnectionLost = false;
 
-			scope.lastMeasure = data.data[data.data.length - 1];
-			scope.data = data.data;
+			if (data.period == 'hour') {
+			    scope.lastMeasure = data.data[data.data.length - 1];
+			    scope.data = data.data;
+			} else if (data.period == 'lastMeasure') {
+			    scope.lastMeasure = data.data[0];
+			    scope.data.shift();
+			    scope.data.push(data.data[0]);
+			}
 			scope.$digest();
 		    }
 		});

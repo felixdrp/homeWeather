@@ -179,7 +179,7 @@ angular.module('myApp')
 	    coordinades = {"x": xZero - 10 + i * pixelsByFiveDegrees, "y": yZero + yTextToAxis};
 	  }
 	  temperatureMeasure.text = makeSVG('text', coordinades);
-	  temperatureMeasure.text.textContent = i * 5;
+	  temperatureMeasure.text.textContent = i * 5 + '°C';
 	  temperatureMeasure.text.classList.add('temperature-measure-text');
 	  angular.element(document.getElementById('graphic')).append(temperatureMeasure.text);
 	}
@@ -243,10 +243,15 @@ angular.module('myApp')
 	      } else {
 		// Add a new measure
 		plotHistoricLine = plotHistoricLine + 1;
-
 		scope.sensorConnectionLost = false;
-		scope.lastMeasure = data.data[data.data.length - 1];
-		scope.data[data.type] = data.data;
+		if (data.period == 'hour') {
+		  scope.lastMeasure = data.data[data.data.length - 1];
+		  scope.data[data.type] = data.data;
+		} else if (data.period == 'lastMeasure') {
+		  scope.data[data.type].shift();
+		  scope.data[data.type].push(data.data[0]);
+		}
+		// When plotHistoricLine == 2 whe have two lectures.
 		if (plotHistoricLine == 2) {
 		  plotHistoricLine = 0;
 		  for (var k = 0; k < scope.data.temperature.length - 1; k++) {
@@ -279,7 +284,7 @@ angular.module('myApp')
 	scope:{},
 	link: link,
 	template: '<input type="button" ng-click="" value="{{sensors[0].name}}">'+
-	  '<svg id="graphic" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg" version="1.1"> ' +
+	  '<svg id="graphic" width="auto" height="80%" viewBox="0 0 550 380" xmlns="http://www.w3.org/2000/svg" version="1.1"> ' +
 	  '<path id="saturatedVaporDensity" class="saturated-vapor-density" d="{{plot.p1}}"/>' +
 	  '<text dx="145" dy="-2" class="saturated-vapor-density-text">' +
 	  '<textPath xlink:href="#saturatedVaporDensity">' +
@@ -395,8 +400,14 @@ angular.module('myApp')
 		    } else {
 			scope.sensorConnectionLost = false;
 
-			scope.lastMeasure = data.data[data.data.length - 1];
-			scope.data = data.data;
+			if (data.period == 'hour') {
+			    scope.lastMeasure = data.data[data.data.length - 1];
+			    scope.data = data.data;
+			} else if (data.period == 'lastMeasure') {
+			    scope.lastMeasure = data.data[0];
+			    scope.data.shift();
+			    scope.data.push(data.data[0]);
+			}
 			scope.$digest();
 		    }
 		});

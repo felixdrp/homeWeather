@@ -1,10 +1,11 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  h1.title= title
 
   div(ng-controller='userInterface')
-    div(ng-repeat="sensor in sensors")
-      div(x-sensor-data-box='', ng-repeat="type in sensor.sensors", type="{{type}}", sensor-id="{{sensor.id}}")
-    div(x-confort-zone="")
+    div.sensor-list
+      div.sensor(ng-repeat="sensor in sensors")
+        div.title {{sensor.name | uppercase}}
+        div.sensor-type(x-sensor-data-box='', ng-repeat="type in sensor.sensors", type="{{type}}", sensor-id="{{sensor.id}}")
+    div.confort-zone(x-confort-zone="")

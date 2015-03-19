@@ -34,30 +34,36 @@ server.on('error', onError);
 server.on('listening', onListening);
 
 var wss = new WebSocketServer({server: server});
-wss.on('connection', function(ws) {
+wss.on('connection', function (ws) {
     var queryList;
 
     console.log('started websocket client');
 
-    ws.on('close', function() {
+    ws.on('close', function () {
 	     console.log('stopping websocket client');
 	     //clearInterval(id);
     });
 
-    ws.onmessage = function(event) {
+    ws.onmessage = function (event) {
 	// Check the query.
 	var query = /sensor\/(\d+)\/(humidity|temperature)\//g.exec(event.data);
 	if (query != null && query.length == 3) {
 	    console.log(event.data);
 
 	    DBQuery.lastHour(query[1], query[2])
-		.then(function (data) { ws.send(data); },
+		.then(function (data) {
+		    var addPeriod = JSON.parse(data);
+		    addPeriod["period"] = 'hour';
+		    ws.send(JSON.stringify(addPeriod));},
 		      function (error) { console.error(error); });
 
 	    // Give the last measure automaticaly
-	    setInterval(function(){ 
-		DBQuery.lastHour(query[1], query[2])
-		    .then(function (data) { ws.send(data); },
+	    setInterval(function () { 
+		DBQuery.lastMeasure(query[1], query[2])
+		    .then(function (data) {
+		    var addPeriod = JSON.parse(data);
+		    addPeriod["period"] = 'lastMeasure';
+		    ws.send(JSON.stringify(addPeriod));},
 			  function (error) { console.error(error); });
 	    }, 30000);
 	}
