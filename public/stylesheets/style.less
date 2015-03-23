@@ -1,7 +1,7 @@
 // Wrapper for media type
 /* Small Devices, Tablets */
 /* #### Mobile Phones Portrait #### */
-/*
+
 .mobile-portrait(@rules) {
   @media (min-width: 700px) and (orientation: portrait) {
     @rules();
@@ -29,26 +29,36 @@ h1.title {
     .title {
       margin: 3px;
       padding: 2px 5px;
-      border: solid 3px;
-      border-color: DarkSlateGray Silver Silver DarkSlateGray;
+      border: solid 1px;
+      border-color: Silver;
       border-radius: 5px;
+      font-family: arial;            
+      text-align: center;
+      font-weight: bold;
+      color: DarkSlateGray;
+    }
+
+    .sensor-type {
+      padding: 5px 0;
+
+      .measure {
+	margin-left: 5px;
+	font-size: xx-large;
+	text-align: center;
+      }
+
     }
   }
 }
 
 .measure-box-header {
-  font-size: large;
+  font-size: x-large;
 
   @media (min-width: 700px) and (orientation: portrait) {
     font-size: 100px;
   }
 
   margin-bottom: 5px;
-
-  .measure {
-    margin-left: 5px;
-    font-size: x-large;
-  }
 
 }
 
@@ -63,6 +73,10 @@ h1.title {
   })
 
 }
+.sensor-estadistic-data > table {
+  margin: 0px auto;
+  width: 80%;
+}
 
 // Confort Zone styles
 .confort-zone {
@@ -75,6 +89,8 @@ h1.title {
     left: 1%;
     width: 540px;
   })
+}
+
 
   .coordinate-axis {
     fill:none;
@@ -136,4 +152,3 @@ h1.title {
     stroke:red;
     stroke-width:1;
   }
-}

@@ -87,7 +87,7 @@ angular.module('myApp')
 
 		// Read measure: if the period is not added it will be the last hour
 		// sensorDriver.readMeasure(id, type, period);
-		sensorDriver.readMeasure(attrs.sensorId, attrs.type, '', scope);
+		sensorDriver.readMeasure(attrs.sensorId, attrs.type, 'hour', scope);
 		// Listen the response from server
 		scope.$on('sensor_' + attrs.sensorId + '_' + attrs.type, function(event, data) {
 		    console.log('recogido dato');

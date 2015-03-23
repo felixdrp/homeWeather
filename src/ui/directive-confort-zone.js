@@ -138,7 +138,7 @@ angular.module('myApp')
 		    				"y1": 0, 
 		    				"x2": 0,
 		    				"y2": 0, 
-		    				"style":"stroke:rgb(" + lineColor + "," + lineColor + "," + lineColor + ")"
+		    				"style":"stroke:rgb(" + lineColor + "," + 0 + "," + lineColor + ")"
 		    			      }));
 	  temperatureHistoryLine[j].classList.add('temperature-history');
 	  angular.element(document.getElementById('graphic')).append(temperatureHistoryLine[j]);
@@ -190,14 +190,23 @@ angular.module('myApp')
 		  scope.lastMeasure = data.data[data.data.length - 1];
 		  scope.data[data.type] = data.data;
 		} else if (data.period == 'lastMeasure') {
-		  scope.data[data.type].shift();
+		  // If the scope.data.type is undefined
+		  if (scope.data[data.type] != undefined) {
+		      scope.data[data.type].shift();
+		  } else {
+		      scope.data[data.type] = [];
+		  }		    
 		  scope.data[data.type].push(data.data[0]);
 		}
 		// When plotHistoricLine == 2 whe have two lectures.
-		if (plotHistoricLine == 2) {
+		if (plotHistoricLine >= 2 &&
+		    scope.data.temperature != undefined &&
+		    scope.data.humidity != undefined &&
+		    scope.data.temperature.length > 1 &&
+		    scope.data.humidity.length > 1 ) {
 		  plotHistoricLine = 0;
 		  for (var k = 0; k < scope.data.temperature.length - 1; k++) {
-		    // Temperature lines
+		    // Replot Temperature/Humidity lines
 		    temperatureHistoryLine[k].setAttribute("x1", xZero + scope.data.temperature[k] * temperaturePixelsByDegree);
 		    temperatureHistoryLine[k].setAttribute("y1", yZero - saturatedVaporDensity(scope.data.temperature[k]) * (scope.data.humidity[k] / 100) * humidityPixelsByFactor);
 		    temperatureHistoryLine[k].setAttribute("x2", xZero + scope.data.temperature[k + 1] * temperaturePixelsByDegree);
@@ -226,8 +235,8 @@ angular.module('myApp')
 	scope:{},
 	link: link,
 	template: '<input type="button" ng-click="" value="{{sensors[0].name}}">'+
-	  '<svg id="graphic" width="auto" height="80%" viewBox="0 0 550 380" xmlns="http://www.w3.org/2000/svg" version="1.1"> ' +
-	  '<path id="saturatedVaporDensity" class="saturated-vapor-density" d="{{plot.p1}}"/>' +
+	  '<svg id="graphic"  height="80%" viewBox="0 0 550 380" xmlns="http://www.w3.org/2000/svg" version="1.1"> ' +
+	  '<path id="saturatedVaporDensity" class="saturated-vapor-density" ng-attr-d="{{plot.p1}}"/>' +
 	  '<text dx="145" dy="-2" class="saturated-vapor-density-text">' +
 	  '<textPath xlink:href="#saturatedVaporDensity">' +
 	  'saturated vapor density' +

@@ -36,6 +36,7 @@ angular.module('myApp')
 		webSocketSend();
 	    };
 
+	    // Send messages after websocket is ready (asynchronous)
 	    function webSocketSend(message) {
 //console.log(webSocketCache);
 //console.log(message);
@@ -73,14 +74,14 @@ console.log(message);
 		readMeasure: function(sensorId,  type, period, scope) {
 		    var query = 'sensor/' + sensorId + '/' + type + '/' + period;
 
-		    var sensorIndex = sensorListScope.findIndex(function (sensor, index) { return sensor.query == query; });
-		    if (sensorIndex == -1) {
+		    var sensorIndex = sensorListScope.filter(function (sensor) { return sensor.query == query; });
+		    if (sensorIndex == 0) {
 			// Register the sensor and type.
 			sensorListScope.push({query: query, id: sensorId, type: type, scope: [scope]});
 			webSocketSend(query);
 		    } else {
 			// Add scope to the query.
-			sensorListScope[sensorIndex].scope.push(scope);
+			sensorListScope.filter(function (value) { if (value.query == query) { value.scope.push(scope);} });
 		    }
 		}     
 	    };

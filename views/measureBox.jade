@@ -4,7 +4,7 @@ div.measure-box-header(name="measure-box")
 span.measure
   span {{lastMeasure.toFixed(2)}} {{units}}
   span(ng-show="type == 'Temperature'")  / {{(lastMeasure * 1.8 + 32).toFixed(2)}}°F
-div(name="estadistic-data")
+div.sensor-estadistic-data(name="estadistic-data")
   div
     table
       tr(style="text-align: left;")
