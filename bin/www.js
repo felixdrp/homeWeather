@@ -67,9 +67,8 @@ wss.on('connection', function (ws) {
 		}
 	    }
 	}
-	console.log(ws.readyState);
-	console.log(queryWebSocketList);
-	//clearInterval(id);
+//	console.log(ws.readyState);
+//	console.log(queryWebSocketList);
     });
 
     ws.onmessage = function (event) {
@@ -115,12 +114,9 @@ console.log(query[0]);
 		    DBQuery.lastMeasure(query[1], query[2])
 			   .then(function (data) {
 			       var dataJson = JSON.parse(data);
-			       console.log('0>' + dataJson.type);
 			       
 			       if (lastMeasureSend[dataJson.type].timestamp == undefined ||
 				   lastMeasureSend[dataJson.type].timestamp != dataJson.timestamp[0]) {
-				       console.log('1>' + lastMeasureSend[dataJson.type].timestamp);
-				       console.log('2>' + dataJson.timestamp);
 				       lastMeasureSend[dataJson.type].timestamp = dataJson.timestamp[0];
 				       dataJson["period"] = 'lastMeasure';
 				       queryWebSocketList[queryWebSocketList.length - 1].webSockets.forEach(function (value, index) {

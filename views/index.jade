@@ -8,4 +8,4 @@ block content
       div.sensor(ng-repeat="sensor in sensors")
         div.title {{sensor.name | uppercase}}
         div.sensor-type(x-sensor-data-box='', ng-repeat="type in sensor.sensors", type="{{type}}", sensor-id="{{sensor.id}}")
-    div.confort-zone(x-confort-zone="")
+    div.comfort-zone(x-comfort-zone="")

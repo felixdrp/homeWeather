@@ -58,7 +58,7 @@ angular.module('myApp')
 
 'use strict';
 angular.module('myApp')
-  .directive('confortZone', [
+  .directive('comfortZone', [
     '$resource',
     '$interval',
     'sensorDriver',
@@ -68,6 +68,11 @@ angular.module('myApp')
 	var sensorId;
 	// When plotHistoricLine = 2 plot the historic line
 	var plotHistoricLine = 0;
+	// To check when we have a new last lecture.
+	scope.lastMeasure = {
+	  "temperature": {},
+	  "humidity": {}
+	};
 	scope.data = {};
 	
 	var plot = '';
@@ -135,16 +140,16 @@ angular.module('myApp')
 	  angular.element(document.getElementById('graphic')).append(humidityPercentageText);
 	});
 
-	// Confort Zone
+	// Comfort Zone
 	var pathElement;
 	plot = '';
-	// 40% confort line
+	// 40% comfort line
 	var value = 4;
 	signal.slice(440, 540).forEach(function (x, y, z) { if (y===0) {plot += ' M230,' + (350 - z[0]*10*(value/10));} 
 							    else { plot += ' l0.5,' + (-(x - z[y-1]))*10*(value/10);}});
 	// Jump from 40% to 60%
 	plot += ' l0, -51.5';
-	// 60% confort line
+	// 60% comfort line
 	var value = 6;
 	signal.slice(440, 540).reverse().forEach(function (x, y, z) { if (y===0) {plot += '';} 
 								      else { plot += ' l-0.5,' + (-(x - z[y-1]))*10*(value/10);}});
@@ -152,7 +157,7 @@ angular.module('myApp')
 
 	// Add the path information attribute
 	pathElement = makeSVG('path', {"d":plot});
-	pathElement.classList.add('confort-zone-area');
+	pathElement.classList.add('comfort-zone-area');
 	angular.element(document.getElementById('graphic')).append(pathElement);
 
 	// Coordinates axis measures
@@ -221,17 +226,16 @@ angular.module('myApp')
 	// Get de SensorList and it is used to create the sensors buttons (VIEW).
 	sensorDriver.getSensorList().then(function(data) {
 	  scope.sensors = [data];
-	  //angular.$apply;
 	  console.log(data);
-	  scope.showRoomConfort(0);
+	  scope.showRoomComfort(0);
 	});
 	
-	scope.showRoomConfort = function(roomId) {
+	scope.showRoomComfort = function(roomId) {
 
 	  scope.sensors[roomId].sensors.forEach( function(sensorType) {
 	    sensorDriver.readMeasure(scope.sensors[roomId].id, sensorType, '', scope);	    
 	    scope.$on('sensor_' + scope.sensors[roomId].id + '_' + sensorType, function(event, data) {
-	      console.log('datos llegan a confort');
+	      console.log('New Comfort zone data to plot');
 	      console.log(data.data);
 	      if (data.data == undefined | data.data == null) {
 		scope.sensorConnectionLost = true;
@@ -245,16 +249,25 @@ angular.module('myApp')
 		plotHistoricLine = plotHistoricLine + 1;
 		scope.sensorConnectionLost = false;
 		if (data.period == 'hour') {
-		  scope.lastMeasure = data.data[data.data.length - 1];
-		  scope.data[data.type] = data.data;
+		  scope.lastMeasure[data.type].timestamp = data.timestamp[data.timestamp.length - 1];
+		  // Copy data
+		  scope.data[data.type] = JSON.parse(JSON.stringify(data.data));
 		} else if (data.period == 'lastMeasure') {
+		  // If it is the same last lecture return. (wait the next lecture)
+		  if (scope.lastMeasure[data.type].timestamp == data.timestamp[data.timestamp.length - 1]) {
+		    return;
+		  } else {
+		    // If it is not equal store the las measure
+		    scope.lastMeasure[data.type].timestamp = data.timestamp[data.timestamp.length - 1];
+		  }
+
 		  // If the scope.data.type is undefined
 		  if (scope.data[data.type] != undefined) {
 		      scope.data[data.type].shift();
 		  } else {
 		      scope.data[data.type] = [];
-		  }		    
-		  scope.data[data.type].push(data.data[0]);
+		  }
+		  scope.data[data.type].push(JSON.parse(JSON.stringify(data.data[0])));
 		}
 		// When plotHistoricLine == 2 whe have two lectures.
 		if (plotHistoricLine >= 2 &&
