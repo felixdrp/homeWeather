@@ -19,6 +19,7 @@ a {
 
 h1.title {
   margin-left: 20px;
+  text-shadow: 0px 2px 2px #91F7AF, rgb(224, 224, 224) 1px 1px 0px;
 }
 
 .sensor-list {
@@ -45,6 +46,8 @@ h1.title {
 	margin-left: 5px;
 	font-size: xx-large;
 	text-align: center;
+	font-family: Helvetica;
+	color: rgb(129, 159, 247);
       }
 
     }
@@ -53,19 +56,21 @@ h1.title {
 
 .measure-box-header {
   font-size: x-large;
-
+  font-family: "Courier New";
+  
+  span {
+   padding-left: 5px;
+   color: #777;
+  }
   @media (min-width: 700px) and (orientation: portrait) {
     font-size: 100px;
   }
-
-  margin-bottom: 5px;
-
 }
 
 .sensor-title-image {
   margin: 3px 8px;
   float: left;
-  height: 10vh;
+  height: 8vh;
   min-height: 30px;
 
   .mobile-portrait({
@@ -73,9 +78,10 @@ h1.title {
   })
 
 }
-.sensor-estadistic-data > table {
-  margin: 0px auto;
+.sensor-statistic-data table {
+  margin: 0 auto;
   width: 80%;
+  color: #848484;
 }
 
 // Comfort Zone styles
@@ -119,15 +125,20 @@ h1.title {
     stroke:red;
     stroke-width:1;
   }
+  .comfort-zone-text {
+    fill: green;
+    font-family: Verdana;
+    font-size: 12px;
+  }
 
   .humidity-line { 
-    fill:none;
-    stroke:blue;
-    stroke-width:1;
+    fill: none;
+    stroke: #819FF7;
+    stroke-width: 1px;
   }
 
   .humidity-percentage-text {
-    fill: blue;
+    fill: #819FF7;
     font-size: 13;
     font-family: arial;
   }

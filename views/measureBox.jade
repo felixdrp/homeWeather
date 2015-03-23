@@ -1,10 +1,10 @@
 div.measure-box-header(name="measure-box")
   img.sensor-title-image(ng-src="{{imageUrl}}")
   span {{type}}
-span.measure
-  span {{lastMeasure.toFixed(2)}} {{units}}
+div.measure
+  span {{lastMeasure.toFixed(2)}}{{units}}
   span(ng-show="type == 'Temperature'")  / {{(lastMeasure * 1.8 + 32).toFixed(2)}}°F
-div.sensor-estadistic-data(name="estadistic-data")
+div.sensor-statistic-data(name="estadistic-data")
   div
     table
       tr(style="text-align: left;")

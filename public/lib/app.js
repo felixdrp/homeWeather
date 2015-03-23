@@ -116,7 +116,11 @@ angular.module('myApp')
 	  signal.forEach(function (x, y, z) { if (y===0) {plot += ' M10,' + (350 - z[0] * humidityPixelsByFactor * (value / 10));} 
 					      else { plot += ' l0.5,' + (-(x - z[y - 1])) * humidityPixelsByFactor * (value / 10);}});
 	  // Add the path information attribute
-	  pathElement = makeSVG('path', {"d":plot});
+	  if (value == 6) {
+	    pathElement = makeSVG('path', {"id": 'comfortZone', "d":plot});
+	  } else {
+	    pathElement = makeSVG('path', {"d":plot});
+	  }
 	  pathElement.classList.add('humidity-line');
 	  angular.element(document.getElementById('graphic')).append(pathElement);
 	});
@@ -311,6 +315,11 @@ angular.module('myApp')
 	  '<text dx="145" dy="-2" class="saturated-vapor-density-text">' +
 	  '<textPath xlink:href="#saturatedVaporDensity">' +
 	  'saturated vapor density' +
+	  '</textPath>' +
+	  '</text>' +
+	  '<text dx="220" dy="-2" class="comfort-zone-text">' +
+	  '<textPath xlink:href="#comfortZone">' +
+	  'Comfort Zone, 22-27°C' +
 	  '</textPath>' +
 	  '</text>' +
 	  '<path class="coordinate-axis" d="m10,10 l0,340 l500,0 l0,-340"/>' +
